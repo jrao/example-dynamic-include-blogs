@@ -12,10 +12,7 @@
  * details.
  */
 
-package jrao.dynamic.include.blogs.example;
-
-import com.liferay.portal.kernel.servlet.taglib.TagDynamicInclude;
-import com.liferay.portal.kernel.util.PortletKeys;
+package com.liferay.example.dynamic.include.blogs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,30 +22,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 
-@Component(immediate = true, service = TagDynamicInclude.class)
-public class SampleFormTagDynamicInclude implements TagDynamicInclude {
+import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
+
+@Component(
+	immediate = true,
+	service = DynamicInclude.class
+)
+public class BlogsDynamicInclude implements DynamicInclude {
 
 	@Override
 	public void include(
 			HttpServletRequest request, HttpServletResponse response,
-			String tagClassName, String tagDynamicId, String tagPoint)
+			String key)
 		throws IOException {
 
 		PrintWriter printWriter = response.getWriter();
 
 		printWriter.println(
-			"<h2>Added by Blogs Dynamic Include</h2><br />");
+			"<h2>Added by Blogs Dynamic Include!</h2><br />");
 	}
 
 	@Override
-	public void register(TagDynamicIncludeRegistry tagDynamicIncludeRegistry) {
-		tagDynamicIncludeRegistry.register(
-			"com.liferay.taglib.aui.BlogsFormTag", PortletKeys.BLOGS + "-loginForm",
-			"doStartTag#before");
-
-		tagDynamicIncludeRegistry.register(
-			"com.liferay.taglib.aui.BlogsFormTag",
-			PortletKeys.BLOGS + "-loginFormModal", "doStartTag#before");
+	public void register(DynamicIncludeRegistry dynamicIncludeRegistry) {
+		dynamicIncludeRegistry.register(
+			"com.liferay.blogs.web#/blogs/view_entry.jsp#pre");
 	}
 
 }
